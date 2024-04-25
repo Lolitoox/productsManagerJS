@@ -5,6 +5,7 @@ class ProductManager {
         this.path = path;
         this.products = [];
         this.id = 0;
+        this.status = true;
     }
 //Función para iniciar el pruductData
     async initialize() {
