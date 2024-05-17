@@ -1,7 +1,7 @@
 import fs from "fs";
 
 let carts = [];
-const pathFile = "./data/carts.json";
+const pathFile = "./data/products.json";
 
 const getCarts = async () => {
   const cartsJson = await fs.promises.readFile(pathFile);

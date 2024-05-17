@@ -1,7 +1,14 @@
 {
+  "type": "module",
   "dependencies": {
     "express": "^4.19.2",
-    "node": "^18.20.2",
+    "mongoose": "^8.3.5",
+    "node": "^18.20.2"
+  },
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.0"
   }
 }

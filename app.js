@@ -1,7 +1,8 @@
 import router from './src/router/index.js';
+import express from 'express';
+import { connectMongoDB } from './src/config/mongoDB.config.js';
 
-const express = require('express');
-const ProductManager = require('./src/managers/productsManager.js');
+connectMongoDB();
 const app = express();
 const PORT = 8080;
 
