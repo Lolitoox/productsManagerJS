@@ -1,5 +1,5 @@
 import { productModel } from "../models/product.model.js";
-
+//Funciones para traer todos los productos, para traer por id, crear si no existe el producto, actualizarlo y borrarlo
 const getAll = async () => {
     const products = await productModel.find();
     return products;
