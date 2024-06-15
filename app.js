@@ -1,24 +1,49 @@
-import router from './src/router/index.js';
-import express from 'express';
-import { connectMongoDB } from './src/config/mongoDB.config.js';
+import express from "express";
+import router from "./src/router/index.js";
+import { connectMongoDB } from "./src/config/mongoDB.config.js";
 import session from "express-session";
-import MongoStore from 'connect-mongo';
+import MongoStore from "connect-mongo";
+import passport from "passport";
+import initializePassport from "./src/config/passport.config.js";
+import cookieParser from "cookie-parser";
 
 connectMongoDB();
 
 const app = express();
-const PORT = 8080;
+initializePassport();
 
-app.use ("/api", router);
-app.use (session({
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser("secreto"));
+app.use(
+  session({
     store: MongoStore.create({
-        mongoUrl: "mongodb+srv://guidobasano:guido123456@e-commerce.d8yxr8i.mongodb.net/ecommerce",
-        ttl: 15
+      mongoUrl: "mongodb+srv://guidobasano:guido123456@e-commerce.d8yxr8i.mongodb.net/ecommerce",
+      ttl: 15,
     }),
     secret: "CodigoSecreto",
-    resave: true
-}));
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
+// Rutas de autenticación
+app.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile'] }));
+
+app.get('/auth/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/' }),
+    (req, res) => {
+        // Autenticación exitosa, redirigir.
+        res.redirect('/');
+    });
+
+
+app.use("/api", router);
+
+app.listen(8080, () => {
+  console.log("Escuchando el servidor en el puerto 8080");
 });
+
